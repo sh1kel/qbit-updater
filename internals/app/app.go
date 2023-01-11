@@ -15,6 +15,9 @@ func Process(config *configuration.Config) {
 	version, _ := qc.GetVersion()
 	log.Infof("qB version: %s", version)
 	torrents, err := qc.GetAllTorrents(nil)
+	if err != nil {
+		log.Error(err)
+	}
 	torrent, _ := qc.GetTorrentInfo(torrents[0].Hash)
 	log.Debug(*torrent)
 

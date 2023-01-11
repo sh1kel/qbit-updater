@@ -23,7 +23,6 @@ var (
 		Run:   run,
 	}
 	configFile string
-	log        *logrus.Logger
 )
 
 func Execute() {
