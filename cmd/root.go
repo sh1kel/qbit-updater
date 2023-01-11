@@ -6,9 +6,9 @@ Copyright © 2023 Alexey Elagin <me@sh1kel.com>
 package cmd
 
 import (
+	"github.com/sh1kel/qbit-updater/internals/app"
+	"github.com/sh1kel/qbit-updater/internals/configuration"
 	"os"
-	"qbit-updater/internals/app"
-	"qbit-updater/internals/configuration"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"

@@ -1,8 +1,8 @@
 package app
 
 import (
-	"qbit-updater/internals/configuration"
-	"qbit-updater/internals/tclient"
+	"github.com/sh1kel/qbit-updater/internals/configuration"
+	"github.com/sh1kel/qbit-updater/internals/tclient"
 )
 
 func Process(config *configuration.Config) {
