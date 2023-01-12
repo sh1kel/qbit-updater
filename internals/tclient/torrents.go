@@ -44,3 +44,18 @@ func (c *qClient) GetTorrentInfo(hash string) (*Torrent, error) {
 	}
 	return &torrent, nil
 }
+
+func (c *qClient) DownloadFromFile(file string, options map[string]string) error {
+	c.log.Debugf("Add torrent from file: %s", file)
+	reader, ct, err := c.createReqBody(file, options)
+	if err != nil {
+		return err
+	}
+
+	resp, err := c.post("/api/v2/torrents/add", options, reader, ct)
+	if err != nil {
+		return err
+	}
+	resp.Body.Close()
+	return nil
+}

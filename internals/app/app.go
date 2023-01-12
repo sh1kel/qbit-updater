@@ -7,7 +7,7 @@ import (
 
 func Process(config *configuration.Config) {
 	log := config.Logger
-	qc := tclient.New("http://192.168.1.2:8082", "1", "2", log)
+	qc := tclient.New("http://192.168.1.2:8085", "1", "2", log)
 	err := qc.Connect()
 	if err != nil {
 		log.Error(err)
@@ -18,7 +18,14 @@ func Process(config *configuration.Config) {
 	if err != nil {
 		log.Error(err)
 	}
-	torrent, _ := qc.GetTorrentInfo(torrents[0].Hash)
-	log.Debug(*torrent)
+	for _, t := range torrents {
+		ti, _ := qc.GetTorrentInfo(t.Hash)
+		log.Debug(*ti)
+
+	}
+	err = qc.DownloadFromFile("111.torrent", map[string]string{})
+	if err != nil {
+		log.Error(err)
+	}
 
 }
