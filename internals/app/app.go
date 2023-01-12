@@ -27,5 +27,8 @@ func Process(config *configuration.Config) {
 	if err != nil {
 		log.Error(err)
 	}
-
+	qc.DeleteTorrents([]string{"a", "b", "c"})
+	if err != nil {
+		log.Error(err)
+	}
 }

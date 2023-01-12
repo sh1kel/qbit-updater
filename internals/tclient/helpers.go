@@ -3,6 +3,7 @@ package tclient
 import (
 	"bytes"
 	"fmt"
+	"html"
 	"io"
 	"mime/multipart"
 	"net/http"
@@ -53,7 +54,7 @@ func (c *qClient) get(uri string, opts map[string]string) (*http.Response, error
 		}
 		req.URL.RawQuery = query.Encode()
 	}
-	c.log.Debug(req.Form)
+	c.log.Debug(req.URL)
 	resp, err := c.client.Do(req)
 	if err != nil {
 		return nil, err
@@ -79,7 +80,7 @@ func (c *qClient) createReqBody(file string, options map[string]string) (io.Read
 	}
 
 	header := make(textproto.MIMEHeader)
-	header.Set("Content-Disposition", fmt.Sprintf(`form-data; name="torrents"; filename="%s"`, file))
+	header.Set("Content-Disposition", fmt.Sprintf(`form-data; name="torrents"; filename="%s"`, html.EscapeString(file)))
 	header.Set("Content-Type", "application/x-bittorrent")
 
 	formWriter, err := writer.CreatePart(header)
