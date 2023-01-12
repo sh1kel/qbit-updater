@@ -37,7 +37,7 @@ func (c *qClient) Connect() error {
 	credentials := make(map[string]string)
 	credentials["username"] = c.user
 	credentials["password"] = c.pass
-	resp, err := c.post("/api/v2/auth/login", credentials)
+	resp, err := c.post("/api/v2/auth/login", credentials, nil, "")
 	if err != nil {
 		return err
 	}

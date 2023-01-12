@@ -1,9 +1,11 @@
 /*
-Copyright © 2023 NAME HERE <EMAIL ADDRESS>
+Copyright © 2023 Alexey Elagin <me@sh1kel.com>
+
 */
+
 package main
 
-import "qbit-updater/cmd"
+import "github.com/sh1kel/qbit-updater/cmd"
 
 func main() {
 	cmd.Execute()

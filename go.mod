@@ -1,4 +1,4 @@
-module qbit-updater
+module github.com/sh1kel/qbit-updater
 
 go 1.19
 

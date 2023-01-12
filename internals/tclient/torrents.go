@@ -3,6 +3,7 @@ package tclient
 import (
 	"encoding/json"
 	"io"
+	"strings"
 )
 
 func (c *qClient) GetVersion() (string, error) {
@@ -43,4 +44,38 @@ func (c *qClient) GetTorrentInfo(hash string) (*Torrent, error) {
 		return nil, err
 	}
 	return &torrent, nil
+}
+
+func (c *qClient) DownloadFromFile(file string, options map[string]string) error {
+	c.log.Debugf("Add torrent from file: %s", file)
+	reader, ct, err := c.createReqBody(file, options)
+	if err != nil {
+		return err
+	}
+
+	resp, err := c.post("/api/v2/torrents/add", options, reader, ct)
+	if err != nil {
+		return err
+	}
+	resp.Body.Close()
+	return nil
+}
+
+func (c *qClient) DeleteTorrents(hashes []string) error {
+	c.log.Debugf("Deleting torrent: %s", hashes)
+
+	hashList := strings.Builder{}
+	for _, hash := range hashes {
+		hashList.WriteString(hash + "|")
+	}
+	options := map[string]string{
+		"hashes":      hashList.String(),
+		"deleteFiles": "false",
+	}
+	resp, err := c.get("/api/v2/torrents/delete", options)
+	if err != nil {
+		return err
+	}
+	c.log.Infof("Status: %s", resp.Status)
+	return nil
 }
