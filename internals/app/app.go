@@ -2,13 +2,28 @@ package app
 
 import (
 	"github.com/sh1kel/qbit-updater/internals/configuration"
+	"github.com/sh1kel/qbit-updater/internals/forum"
 	"github.com/sh1kel/qbit-updater/internals/tclient"
 )
 
 func Process(config *configuration.Config) {
 	log := config.Logger
+	fc := forum.New(config)
+	err := fc.Init()
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = fc.Auth()
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = fc.GetTorrentFile("538860")
+	if err != nil {
+		log.Fatal(err)
+	}
+	return
 	qc := tclient.New("http://192.168.1.2:8085", "1", "2", log)
-	err := qc.Connect()
+	err = qc.Connect()
 	if err != nil {
 		log.Error(err)
 	}

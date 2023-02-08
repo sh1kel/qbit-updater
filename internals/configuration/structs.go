@@ -8,6 +8,8 @@ type Config struct {
 		UserName string
 		UserPass string
 		Login    string
+		UseProxy bool
+		Socks5   string
 	}
 	Clients struct {
 		Urls []string
