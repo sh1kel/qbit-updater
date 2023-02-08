@@ -1,6 +1,8 @@
 package configuration
 
-import "github.com/sirupsen/logrus"
+import (
+	"github.com/sirupsen/logrus"
+)
 
 type Config struct {
 	Forum struct {
@@ -8,6 +10,7 @@ type Config struct {
 		UserName string
 		UserPass string
 		Login    string
+		Api		 string
 	}
 	Clients struct {
 		Urls []string
