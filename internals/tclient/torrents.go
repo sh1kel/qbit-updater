@@ -2,6 +2,7 @@ package tclient
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"strings"
 )
@@ -65,8 +66,12 @@ func (c *qClient) DeleteTorrents(hashes []string) error {
 	c.log.Debugf("Deleting torrent: %s", hashes)
 
 	hashList := strings.Builder{}
-	for _, hash := range hashes {
-		hashList.WriteString(hash + "|")
+	for i, hash := range hashes {
+		if i < len(hashes)-1 {
+			hashList.WriteString(fmt.Sprintf("%s|", hash))
+		} else {
+			hashList.WriteString(hash)
+		}
 	}
 	options := map[string]string{
 		"hashes":      hashList.String(),
@@ -78,4 +83,28 @@ func (c *qClient) DeleteTorrents(hashes []string) error {
 	}
 	c.log.Infof("Status: %s", resp.Status)
 	return nil
+}
+
+func (c *qClient) GetTrackers(hash string) ([]Tracker, error) {
+	var t []Tracker
+	opts := map[string]string{"hash": hash}
+
+	resp, err := c.get("/api/v2/torrents/trackers", opts)
+	if err != nil {
+		return t, err
+	}
+	json.NewDecoder(resp.Body).Decode(&t)
+	return t, nil
+}
+
+func (c *qClient) GetShortHashFromComment(hash string) (string, error) {
+	t, err := c.GetTorrentInfo(hash)
+	if err != nil {
+		return "", err
+	}
+	s := strings.Split(t.Comment, "=")
+	if len(s) < 2 {
+		return "", fmt.Errorf("bad comment: %s", t.Comment)
+	}
+	return s[len(s)-1], nil
 }

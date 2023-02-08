@@ -110,3 +110,7 @@ func (client *ForumClient) CleanFile() error {
 	}
 	return nil
 }
+
+func (client *ForumClient) GetLastDownloadedFileName() string {
+	return client.lastFile
+}

@@ -63,7 +63,7 @@ type Torrent struct {
 type Tracker struct {
 	Msg      string `json:"msg"`
 	NumPeers int    `json:"num_peers"`
-	Status   string `json:"status"`
+	Status   int    `json:"status"`
 	URL      string `json:"url"`
 }
 
@@ -74,3 +74,11 @@ type TorrentFile struct {
 	Progress int    `json:"progress"`
 	Size     int    `json:"size"`
 }
+
+const (
+	TrackerIsDisabled                        int = 0
+	TrackerHasNotBeenContactedYet                = 1
+	TrackerHasBeenContactedAndIsWorking          = 2
+	TrackerIsUpdating                            = 3
+	TrackerHasBeenContactedButItIsNotWorking     = 4
+)
