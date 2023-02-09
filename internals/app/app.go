@@ -23,6 +23,7 @@ func Process(config *configuration.Config) {
 		err = qc.Connect()
 		if err != nil {
 			log.Error(err)
+			continue
 		}
 		version, _ := qc.GetVersion()
 		if err != nil {
@@ -33,6 +34,7 @@ func Process(config *configuration.Config) {
 		torrentsBeforeClean := len(torrents)
 		if err != nil {
 			log.Error(err)
+			continue
 		}
 		log.Infof("Torrents count: %d", torrentsBeforeClean)
 
