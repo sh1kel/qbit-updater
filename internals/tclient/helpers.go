@@ -31,6 +31,7 @@ func (c *qClient) post(uri string, opts map[string]string, body io.Reader, conte
 		}
 		req.PostForm = form
 	}
+	c.log.Debugf("URL: %#v", req.URL)
 	c.log.Debugf("%v", req)
 	resp, err := c.client.Do(req)
 	if err != nil {
@@ -53,8 +54,11 @@ func (c *qClient) get(uri string, opts map[string]string) (*http.Response, error
 			query.Add(k, v)
 		}
 		req.URL.RawQuery = query.Encode()
+		req.Form = query
 	}
-	c.log.Debug(req.URL)
+	c.log.Debugf("URL: %#v", req.URL)
+	c.log.Debugf("URI: %#v", req.Form)
+	// /api/v2/torrents/delete?hashes=8c212779b4abde7c6bc608063a0d008b7e40ce32&deleteFiles=false
 	resp, err := c.client.Do(req)
 	if err != nil {
 		return nil, err
@@ -65,6 +69,7 @@ func (c *qClient) get(uri string, opts map[string]string) (*http.Response, error
 func (c *qClient) createReqBody(file string, options map[string]string) (io.Reader, string, error) {
 	fileBuffer := new(bytes.Buffer)
 	writer := multipart.NewWriter(fileBuffer)
+
 	tFile, err := os.Open(file)
 	if err != nil {
 		return nil, "", err

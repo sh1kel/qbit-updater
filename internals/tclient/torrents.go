@@ -1,6 +1,7 @@
 package tclient
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -63,7 +64,7 @@ func (c *qClient) DownloadFromFile(file string, options map[string]string) error
 }
 
 func (c *qClient) DeleteTorrents(hashes []string) error {
-	c.log.Debugf("Deleting torrent: %s", hashes)
+	c.log.Infof("Deleting torrent: %v", hashes)
 
 	hashList := strings.Builder{}
 	for i, hash := range hashes {
@@ -77,7 +78,16 @@ func (c *qClient) DeleteTorrents(hashes []string) error {
 		"hashes":      hashList.String(),
 		"deleteFiles": "false",
 	}
-	resp, err := c.get("/api/v2/torrents/delete", options)
+	var b strings.Builder
+	for k, v := range options {
+		s := fmt.Sprintf("%s=%s&", k, v)
+		b.WriteString(s)
+	}
+	//body := bytes.NewBufferString(url.QueryEscape(b.String()))
+	body := bytes.NewBufferString(b.String())
+
+	resp, err := c.post("/api/v2/torrents/delete", options, body, "")
+	//resp, err := c.get("/api/v2/torrents/delete", options)
 	if err != nil {
 		return err
 	}

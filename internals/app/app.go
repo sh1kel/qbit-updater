@@ -25,11 +25,14 @@ func Process(config *configuration.Config) {
 			log.Error(err)
 		}
 		version, _ := qc.GetVersion()
-		log.Infof("qB version: %s", version)
+		log.Infof("[%s] qB version: %s", url, version)
 		if err != nil {
 			log.Error(err)
 		}
+
 		torrents, err := qc.GetAllTorrents(nil)
+		torrentsBeforeClean := len(torrents)
+		log.Infof("Torrents count: %d", torrentsBeforeClean)
 		if err != nil {
 			log.Error(err)
 		}
@@ -55,17 +58,23 @@ func Process(config *configuration.Config) {
 					)
 					if err != nil {
 						log.Error(err)
-						err = os.Remove(fc.GetLastDownloadedFileName())
-						if err != nil {
-							log.Error(err)
-						}
+						continue
 					}
-					qc.DeleteTorrents([]string{t.Hash})
-
+					log.Infof("Deleting torrent file: %s", fc.GetLastDownloadedFileName())
+					err = os.Remove(fc.GetLastDownloadedFileName())
+					if err != nil {
+						log.Error(err)
+					}
+					err = qc.DeleteTorrents([]string{t.Hash})
+					if err != nil {
+						log.Error(err)
+					}
 				}
 			}
 
 		}
+		torrents, err = qc.GetAllTorrents(nil)
+		log.Infof("Torrents count: %d [Deleted %d torrents]", len(torrents), torrentsBeforeClean-len(torrents))
 	}
 
 }
