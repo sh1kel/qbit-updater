@@ -25,22 +25,30 @@ func Process(config *configuration.Config) {
 			log.Error(err)
 		}
 		version, _ := qc.GetVersion()
-		log.Infof("[%s] qB version: %s", url, version)
 		if err != nil {
 			log.Error(err)
 		}
-
+		log.Infof("[%s] qB version: %s", url, version)
 		torrents, err := qc.GetAllTorrents(nil)
 		torrentsBeforeClean := len(torrents)
-		log.Infof("Torrents count: %d", torrentsBeforeClean)
 		if err != nil {
 			log.Error(err)
 		}
+		log.Infof("Torrents count: %d", torrentsBeforeClean)
+
 		for _, t := range torrents {
-			tt, _ := qc.GetTrackers(t.Hash)
+			tt, err := qc.GetTrackers(t.Hash)
+			if err != nil {
+				log.Error(err)
+				continue
+			}
 			for _, tracker := range tt {
 				if tracker.Status == tclient.TrackerHasBeenContactedButItIsNotWorking {
-					ti, _ := qc.GetTorrentInfo(t.Hash)
+					ti, err := qc.GetTorrentInfo(t.Hash)
+					if err != nil {
+						log.Error(err)
+						continue
+					}
 					log.Infof("%s > %s: %s", t.Category, t.Name, ti.Comment)
 					shortHash, err := qc.GetShortHashFromComment(t.Hash)
 					if err != nil {
