@@ -58,7 +58,6 @@ func (c *qClient) get(uri string, opts map[string]string) (*http.Response, error
 	}
 	c.log.Debugf("URL: %#v", req.URL)
 	c.log.Debugf("URI: %#v", req.Form)
-	// /api/v2/torrents/delete?hashes=8c212779b4abde7c6bc608063a0d008b7e40ce32&deleteFiles=false
 	resp, err := c.client.Do(req)
 	if err != nil {
 		return nil, err

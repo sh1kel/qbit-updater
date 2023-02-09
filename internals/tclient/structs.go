@@ -77,8 +77,8 @@ type TorrentFile struct {
 
 const (
 	TrackerIsDisabled                        int = 0
-	TrackerHasNotBeenContactedYet                = 1
-	TrackerHasBeenContactedAndIsWorking          = 2
-	TrackerIsUpdating                            = 3
-	TrackerHasBeenContactedButItIsNotWorking     = 4
+	TrackerHasNotBeenContactedYet            int = 1
+	TrackerHasBeenContactedAndIsWorking      int = 2
+	TrackerIsUpdating                        int = 3
+	TrackerHasBeenContactedButItIsNotWorking int = 4
 )

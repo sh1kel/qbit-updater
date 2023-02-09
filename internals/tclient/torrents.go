@@ -83,15 +83,13 @@ func (c *qClient) DeleteTorrents(hashes []string) error {
 		s := fmt.Sprintf("%s=%s&", k, v)
 		b.WriteString(s)
 	}
-	//body := bytes.NewBufferString(url.QueryEscape(b.String()))
 	body := bytes.NewBufferString(b.String())
 
 	resp, err := c.post("/api/v2/torrents/delete", options, body, "")
-	//resp, err := c.get("/api/v2/torrents/delete", options)
 	if err != nil {
 		return err
 	}
-	c.log.Infof("Status: %s", resp.Status)
+	c.log.Debugf("Status: %s", resp.Status)
 	return nil
 }
 
@@ -101,9 +99,12 @@ func (c *qClient) GetTrackers(hash string) ([]Tracker, error) {
 
 	resp, err := c.get("/api/v2/torrents/trackers", opts)
 	if err != nil {
-		return t, err
+		return nil, err
 	}
-	json.NewDecoder(resp.Body).Decode(&t)
+	err = json.NewDecoder(resp.Body).Decode(&t)
+	if err != nil {
+		return nil, err
+	}
 	return t, nil
 }
 

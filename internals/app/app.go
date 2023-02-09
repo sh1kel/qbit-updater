@@ -39,8 +39,7 @@ func Process(config *configuration.Config) {
 		for _, t := range torrents {
 			tt, _ := qc.GetTrackers(t.Hash)
 			for _, tracker := range tt {
-				if tracker.Status == 4 {
-					log.Infof("Status: %d", tracker.Status)
+				if tracker.Status == tclient.TrackerHasBeenContactedButItIsNotWorking {
 					ti, _ := qc.GetTorrentInfo(t.Hash)
 					log.Infof("%s > %s: %s", t.Category, t.Name, ti.Comment)
 					shortHash, err := qc.GetShortHashFromComment(t.Hash)
@@ -74,6 +73,9 @@ func Process(config *configuration.Config) {
 
 		}
 		torrents, err = qc.GetAllTorrents(nil)
+		if err != nil {
+			log.Error(err)
+		}
 		log.Infof("Torrents count: %d [Deleted %d torrents]", len(torrents), torrentsBeforeClean-len(torrents))
 	}
 
