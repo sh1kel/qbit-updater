@@ -23,4 +23,4 @@ golangci-lint: ## Linting Golang code with golangci
 	golangci-lint run ./... -v --timeout 240s
 
 build:
-	go build -ldflags "-s -w -X main.buildDate=$(date -u +%Y%m%d.%H%M%S) -X main.buildCommit=${APP_VERSION}" \
+	GOOS=linux GOARCH=amd64 go build -ldflags "-s -w -X main.buildDate=$(date -u +%Y%m%d.%H%M%S) -X main.buildCommit=${APP_VERSION}" \
