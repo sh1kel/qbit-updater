@@ -139,9 +139,7 @@ func (c *qClient) SetApplicationPreferences(params map[string]string) error {
 		return err
 	}
 	prefixString := fmt.Sprintf("json=%s", string(jsonStr))
-
-	c.log.Infof(prefixString)
-
+	c.log.Debugf(prefixString)
 	_, err = c.post("/api/v2/app/setPreferences", nil, bytes.NewBufferString(prefixString), "")
 	if err != nil {
 		return err
