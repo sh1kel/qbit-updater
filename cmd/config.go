@@ -40,8 +40,6 @@ func init() {
 	configCmd.Flags().StringVar(&maxActiveDownloads, "max-active-downloads", "20", "")
 	configCmd.Flags().StringVar(&maxActiveUploads, "max-active-uploads", "5", "")
 	configCmd.Flags().StringVar(&maxActiveTorrents, "max-active-torrents", "10000", "")
-
-	initConfigMap()
 }
 
 func start(cmd *cobra.Command, args []string) {
@@ -50,6 +48,7 @@ func start(cmd *cobra.Command, args []string) {
 	if err != nil {
 		config.Logger.Fatal(err)
 	}
+	initConfigMap()
 	app.SetConfigOptions(params, config)
 }
 
