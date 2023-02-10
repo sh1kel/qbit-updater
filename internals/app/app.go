@@ -45,7 +45,9 @@ func Process(config *configuration.Config) {
 				continue
 			}
 			for _, tracker := range tt {
-				if tracker.Status == tclient.TrackerHasBeenContactedButItIsNotWorking {
+				// TODO fix message check
+				if tracker.Status == tclient.TrackerHasBeenContactedButItIsNotWorking &&
+					tracker.Msg == tclient.TorrentNotRegistered {
 					ti, err := qc.GetTorrentInfo(t.Hash)
 					if err != nil {
 						log.Error(err)
