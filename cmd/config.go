@@ -31,15 +31,15 @@ var (
 
 func init() {
 	rootCmd.AddCommand(configCmd)
-	rootCmd.Flags().StringVar(&dlLimit, "dl-limit", "0", "")
-	rootCmd.Flags().StringVar(&upLimit, "up-limit", "6291456", "")
-	rootCmd.Flags().StringVar(&maxConnections, "max-connec", "5000", "")
-	rootCmd.Flags().StringVar(&maxConnectionsPerTorrent, "max-connec-per-torrent", "2", "")
-	rootCmd.Flags().StringVar(&maxUploads, "max-uploads", "5", "")
-	rootCmd.Flags().StringVar(&maxUploadsPerTorrent, "max-uploads-per-torrent", "10", "")
-	rootCmd.Flags().StringVar(&maxActiveDownloads, "max-active-downloads", "20", "")
-	rootCmd.Flags().StringVar(&maxActiveUploads, "max-active-uploads", "5", "")
-	rootCmd.Flags().StringVar(&maxActiveTorrents, "max-active-torrents", "10000", "")
+	configCmd.Flags().StringVar(&dlLimit, "dl-limit", "0", "")
+	configCmd.Flags().StringVar(&upLimit, "up-limit", "6291456", "")
+	configCmd.Flags().StringVar(&maxConnections, "max-connec", "5000", "")
+	configCmd.Flags().StringVar(&maxConnectionsPerTorrent, "max-connec-per-torrent", "2", "")
+	configCmd.Flags().StringVar(&maxUploads, "max-uploads", "5", "")
+	configCmd.Flags().StringVar(&maxUploadsPerTorrent, "max-uploads-per-torrent", "10", "")
+	configCmd.Flags().StringVar(&maxActiveDownloads, "max-active-downloads", "20", "")
+	configCmd.Flags().StringVar(&maxActiveUploads, "max-active-uploads", "5", "")
+	configCmd.Flags().StringVar(&maxActiveTorrents, "max-active-torrents", "10000", "")
 
 	initConfigMap()
 }

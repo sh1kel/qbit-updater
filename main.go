@@ -6,8 +6,8 @@ Copyright © 2023 Alexey Elagin <me@sh1kel.com>
 package main
 
 import (
+	"fmt"
 	"github.com/sh1kel/qbit-updater/cmd"
-	log "github.com/sirupsen/logrus"
 )
 
 var (
@@ -23,7 +23,7 @@ func main() {
 	if len(buildCommit) == 0 {
 		buildCommit = "dev"
 	}
-	log.Printf("Build date: %s\n", buildDate)
-	log.Printf("Build commit: %s\n", buildCommit)
+	fmt.Printf("Build date: %s\n", buildDate)
+	fmt.Printf("Build commit: %s\n", buildCommit)
 	cmd.Execute()
 }
