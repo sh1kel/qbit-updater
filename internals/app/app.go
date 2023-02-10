@@ -19,7 +19,7 @@ func Process(config *configuration.Config) {
 		log.Fatal(err)
 	}
 	for _, url := range config.Clients.Urls {
-		qc := tclient.New(url, "1", "2", log)
+		qc := tclient.New(url, "", "", log)
 		err = qc.Connect()
 		if err != nil {
 			log.Error(err)
@@ -30,6 +30,7 @@ func Process(config *configuration.Config) {
 			log.Error(err)
 		}
 		log.Infof("[%s] qB version: %s", url, version)
+
 		torrents, err := qc.GetAllTorrents(nil)
 		torrentsBeforeClean := len(torrents)
 		if err != nil {

@@ -119,3 +119,30 @@ func (c *qClient) GetShortHashFromComment(hash string) (string, error) {
 	}
 	return s[len(s)-1], nil
 }
+
+func (c *qClient) GetApplicationPreferences() (*QbConfig, error) {
+	var pref = &QbConfig{}
+	resp, err := c.get("/api/v2/app/preferences", nil)
+	if err != nil {
+		return nil, err
+	}
+	err = json.NewDecoder(resp.Body).Decode(&pref)
+	if err != nil {
+		return nil, err
+	}
+	return pref, nil
+}
+
+func (c *qClient) SetApplicationPreferences(params map[string]string) error {
+	jsonStr, err := json.Marshal(params)
+	if err != nil {
+		return err
+	}
+	prefixString := fmt.Sprintf("json=%s", string(jsonStr))
+	c.log.Debugf(prefixString)
+	_, err = c.post("/api/v2/app/setPreferences", nil, bytes.NewBufferString(prefixString), "")
+	if err != nil {
+		return err
+	}
+	return nil
+}

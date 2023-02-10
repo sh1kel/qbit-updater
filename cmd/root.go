@@ -58,6 +58,9 @@ func configureLogger(config *configuration.Config) error {
 
 func run(cmd *cobra.Command, args []string) {
 	config := configuration.InitConfig(configFile)
-	_ = configureLogger(config)
+	err := configureLogger(config)
+	if err != nil {
+		config.Logger.Fatal(err)
+	}
 	app.Process(config)
 }
