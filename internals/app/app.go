@@ -19,6 +19,7 @@ func Process(config *configuration.Config) {
 		log.Fatal(err)
 	}
 	for _, url := range config.Clients.Urls {
+		updateCounter := 0
 		qc := tclient.New(url, "", "", log)
 		err = qc.Connect()
 		if err != nil {
@@ -46,7 +47,6 @@ func Process(config *configuration.Config) {
 				continue
 			}
 			for _, tracker := range tt {
-				// TODO fix message check
 				if tracker.Status == tclient.TrackerHasBeenContactedButItIsNotWorking &&
 					tracker.Msg == tclient.TorrentNotRegistered {
 					ti, err := qc.GetTorrentInfo(t.Hash)
@@ -72,6 +72,8 @@ func Process(config *configuration.Config) {
 						log.Error(err)
 						continue
 					}
+					// Updating counter
+					updateCounter++
 					log.Infof("Deleting torrent file: %s", fc.GetLastDownloadedFileName())
 					err = os.Remove(fc.GetLastDownloadedFileName())
 					if err != nil {
@@ -89,7 +91,7 @@ func Process(config *configuration.Config) {
 		if err != nil {
 			log.Error(err)
 		}
-		log.Infof("Torrents count: %d [Deleted %d torrents]", len(torrents), torrentsBeforeClean-len(torrents))
+		log.Infof("Torrents count: %d [Updated %d torrents]", len(torrents), updateCounter)
 	}
 
 }
